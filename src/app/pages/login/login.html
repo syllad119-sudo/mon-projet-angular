@@ -1,0 +1,25 @@
+<div class="container">
+  <form [formGroup]="profileForm" (ngSubmit)="handleSubmit()">
+    <h3>Formulaire de Connexion</h3>
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+    </label>
+
+    <br />
+    <br />
+
+    <label>
+      password
+      <input type="password" formControlName="password" />
+    </label>
+    @if (profileForm.controls['email'].invalid && profileForm.controls['email'].touched) {
+    <div>Email invalide</div>
+}
+
+     @if (profileForm.controls['password'].invalid && profileForm.controls['password'].touched) {
+    <div>mots de passer incorrect </div>
+}
+    <button type="submit">Se connecter</button>
+  </form>
+</div>

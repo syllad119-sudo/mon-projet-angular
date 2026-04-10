@@ -1,0 +1,58 @@
+form {
+  width: 300px;
+  margin: 0 auto;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  text-align: center;
+  height: auto;
+  
+}
+
+.container {
+  margin: 50px;
+  text-align: center;
+  
+  
+  
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+/* // style sur les champs// */
+input [type='email'],
+input [type='password'] {
+  width: 50%;
+  padding: 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #aaa;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #4caf50; /* vert */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  div.error-message {
+    color: red;
+    margin-top: 8px;
+    font-size: 0.9rem;
+  }
+}
+
