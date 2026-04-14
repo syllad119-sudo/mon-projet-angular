@@ -1,8 +1,23 @@
-<kendo-grid [data]="contacts" [height]="400">
-<kendo-grid-column field="nom" title="Nom"></kendo-grid-column>
-<kendo-grid-column field="prenom" title="prenom"></kendo-grid-column>
-<kendo-grid-column field="email" title="email"></kendo-grid-column>
-<kendo-grid-column field="telephone" title="telephone"></kendo-grid-column>
-<kendo-grid-column field="societe" title="societe"></kendo-grid-column>
-<kendo-grid-column field="commentaire" title="commentaire"></kendo-grid-column>
+<button (click)="addContact()">Ajouter un contact</button>
+
+<kendo-grid
+  [data]="contacts"
+  [height]="400"
+  [navigable]="true"
+  [kendoGridInCellEditing]="createFormGroup"
+  (cellClose)="saveContact($event)">
+
+  <kendo-grid-column field="nom"         title="Nom"         [editable]="true"></kendo-grid-column>
+  <kendo-grid-column field="prenom"      title="Prénom"      [editable]="true"></kendo-grid-column>
+  <kendo-grid-column field="email"       title="Email"       [editable]="true"></kendo-grid-column>
+  <kendo-grid-column field="telephone"   title="Téléphone"   [editable]="true"></kendo-grid-column>
+  <kendo-grid-column field="societe"     title="Société"     [editable]="true"></kendo-grid-column>
+  <kendo-grid-column field="commentaire" title="Commentaire" [editable]="true"></kendo-grid-column>
+
+  <kendo-grid-command-column title="Actions" [width]="130">
+    <ng-template kendoGridCommandColumnTemplate let-rowIndex="rowIndex">
+      <button (click)="removeContact(rowIndex)">Supprimer</button>
+    </ng-template>
+  </kendo-grid-command-column>
+
 </kendo-grid>
