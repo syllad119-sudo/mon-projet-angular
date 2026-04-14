@@ -1,38 +1,50 @@
 import { LoginService } from './../../services/login';
-import { Component } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule ,ReactiveFormsModule, HttpClientModule ],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
+export class Login implements OnInit {
 
-export class Login {
-  // private toastr: ToastrService,
-  constructor(private loginService: LoginService) {}
-  // Validation des inputs
-  profileForm!:FormGroup;
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private toastr: ToastrService   // 👈 ajout
+  ) {}
 
-  // Recuperation et Affichage du Json
+  profileForm!: FormGroup;
+
   ngOnInit() {
-    
     this.profileForm = this.loginService.buildForm();
   }
-  //Soumission et Recuperation des Valeurs des inputs
+
   handleSubmit() {
     const email = this.profileForm.value.email;
     const password = this.profileForm.value.password;
 
-    const validForm:boolean= this.loginService.checkLogin(email, password);
+    const validForm: boolean = this.loginService.checkLogin(email, password);
 
-    if (validForm) {alert ('connexion reussie ')
+    if (validForm) {
 
-    }else { alert ('Verifier vos donnees')
+      // 🔔 toast succès
+      this.toastr.success('Connexion réussie', 'Bienvenue 👋');
+
+      // 🔁 redirection vers contact-grid
+      this.router.navigate(['/contact-grid']);
+
+    } else {
+
+      // 🔔 toast erreur
+      this.toastr.error('Email ou mot de passe incorrect');
 
     }
   }

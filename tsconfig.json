@@ -3,6 +3,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "resolveJsonModule": false,
      "moduleResolution": "bundler",
     "strict": true,
     "noImplicitOverride": true,

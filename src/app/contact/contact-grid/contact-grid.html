@@ -1,23 +1,62 @@
-<button (click)="addContact()">Ajouter un contact</button>
+<div class="grid-toolbar">
+  <button kendoButton (click)="addContact()" themeColor="primary" icon="plus">
+    Ajouter un contact
+  </button>
+</div>
 
 <kendo-grid
   [data]="contacts"
-  [height]="400"
-  [navigable]="true"
-  [kendoGridInCellEditing]="createFormGroup"
-  (cellClose)="saveContact($event)">
+  [height]="500"
+  (edit)="editHandler($event)"
+  (cancel)="cancelHandler($event)"
+  (save)="saveHandler($event)"
+  (remove)="removeHandler($event)"
+>
+  <kendo-grid-column field="nom" title="Nom" [width]="120">
+    <ng-template kendoGridEditTemplate let-formGroup="formGroup">
+      <input kendoTextBox [formControl]="formGroup.get('nom')" />
+    </ng-template>
+  </kendo-grid-column>
 
-  <kendo-grid-column field="nom"         title="Nom"         [editable]="true"></kendo-grid-column>
-  <kendo-grid-column field="prenom"      title="Prénom"      [editable]="true"></kendo-grid-column>
-  <kendo-grid-column field="email"       title="Email"       [editable]="true"></kendo-grid-column>
-  <kendo-grid-column field="telephone"   title="Téléphone"   [editable]="true"></kendo-grid-column>
-  <kendo-grid-column field="societe"     title="Société"     [editable]="true"></kendo-grid-column>
-  <kendo-grid-column field="commentaire" title="Commentaire" [editable]="true"></kendo-grid-column>
+  <kendo-grid-column field="prenom" title="Prénom" [width]="120">
+    <ng-template kendoGridEditTemplate let-formGroup="formGroup">
+      <input kendoTextBox [formControl]="formGroup.get('prenom')" />
+    </ng-template>
+  </kendo-grid-column>
 
-  <kendo-grid-command-column title="Actions" [width]="130">
-    <ng-template kendoGridCommandColumnTemplate let-rowIndex="rowIndex">
-      <button (click)="removeContact(rowIndex)">Supprimer</button>
+  <kendo-grid-column field="email" title="Email" [width]="180">
+    <ng-template kendoGridEditTemplate let-formGroup="formGroup">
+      <input kendoTextBox [formControl]="formGroup.get('email')" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="telephone" title="Téléphone" [width]="130">
+    <ng-template kendoGridEditTemplate let-formGroup="formGroup">
+      <input kendoTextBox [formControl]="formGroup.get('telephone')" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="societe" title="Société" [width]="140">
+    <ng-template kendoGridEditTemplate let-formGroup="formGroup">
+      <input kendoTextBox [formControl]="formGroup.get('societe')" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="commentaire" title="Commentaire" [width]="180">
+    <ng-template kendoGridEditTemplate let-formGroup="formGroup">
+      <input kendoTextBox [formControl]="formGroup.get('commentaire')" />
+    </ng-template>
+  </kendo-grid-column>
+
+  <!-- Colonne des boutons d'action -->
+  <kendo-grid-command-column title="Actions" [width]="160">
+    <ng-template kendoGridCellTemplate>
+      <button kendoGridEditCommand themeColor="base" icon="edit">Éditer</button>
+      <button kendoGridRemoveCommand themeColor="error" icon="delete">Supprimer</button>
+    </ng-template>
+    <ng-template kendoGridEditTemplate>
+      <button kendoGridSaveCommand themeColor="primary" icon="save">Sauvegarder</button>
+      <button kendoGridCancelCommand themeColor="base" icon="cancel">Annuler</button>
     </ng-template>
   </kendo-grid-command-column>
-
 </kendo-grid>

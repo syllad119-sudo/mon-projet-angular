@@ -4,15 +4,5 @@
       "email": "sylladavid119@gmail.com",
       "password": "123456"
     }
-  ],
-  "contacts": [
-    {
-      "nom": "Sylla",
-      "prenom": "David",
-      "email": "sylladavid119@gmail.com",
-      "telephone": "+33612345678",
-      "societe": "Ma société",
-      "commentaire": "Client intéressé"
-    }
   ]
 }

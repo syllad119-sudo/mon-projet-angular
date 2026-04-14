@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import { KENDO_GRID, CellCloseEvent, CreateFormGroupArgs } from '@progress/kendo-angular-grid';
+import {
+  KENDO_GRID,
+  CellCloseEvent,
+  CreateFormGroupArgs,
+  EditEvent,
+  RemoveEvent,
+  SaveEvent,
+  CancelEvent,
+} from '@progress/kendo-angular-grid';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Contact } from '../../models/contact.model';
@@ -14,9 +22,10 @@ import { getContacts } from '../../mocks/contact.mock';
 })
 export class ContactGrid {
   contacts: Contact[] = getContacts();
+  editedRowIndex: number | undefined;
+  editedFormGroup: FormGroup | undefined;
 
-  createFormGroup = (args: CreateFormGroupArgs): FormGroup => {
-    const dataItem = args.dataItem as Contact;
+  createFormGroup(dataItem: Contact): FormGroup {
     return new FormGroup({
       nom: new FormControl(dataItem.nom),
       prenom: new FormControl(dataItem.prenom),
@@ -25,7 +34,7 @@ export class ContactGrid {
       societe: new FormControl(dataItem.societe),
       commentaire: new FormControl(dataItem.commentaire),
     });
-  };
+  }
 
   addContact(): void {
     const nouveau: Contact = {
@@ -39,14 +48,36 @@ export class ContactGrid {
     this.contacts = [nouveau, ...this.contacts];
   }
 
-  saveContact(event: CellCloseEvent): void {
-    const { dataItem, formGroup } = event;
-    if (formGroup?.valid) {
-      Object.assign(dataItem, formGroup.value);
-    }
+  editHandler(event: EditEvent): void {
+    this.closeEditor(event.sender);
+    this.editedRowIndex = event.rowIndex;
+    this.editedFormGroup = this.createFormGroup(event.dataItem);
+    event.sender.editRow(event.rowIndex, this.editedFormGroup);
   }
 
-  removeContact(index: number): void {
-    this.contacts = this.contacts.filter((_, i) => i !== index);
+  cancelHandler(event: CancelEvent): void {
+    this.closeEditor(event.sender, event.rowIndex);
+  }
+
+  saveHandler(event: SaveEvent): void {
+    if (event.formGroup.valid) {
+      Object.assign(this.contacts[event.rowIndex], event.formGroup.value);
+      this.contacts = [...this.contacts];
+    }
+    event.sender.closeRow(event.rowIndex);
+    this.editedRowIndex = undefined;
+    this.editedFormGroup = undefined;
+  }
+
+  removeHandler(event: RemoveEvent): void {
+    this.contacts = this.contacts.filter((_, i) => i !== event.rowIndex);
+  }
+
+  private closeEditor(grid: any, rowIndex = this.editedRowIndex): void {
+    if (rowIndex !== undefined) {
+      grid.closeRow(rowIndex);
+    }
+    this.editedRowIndex = undefined;
+    this.editedFormGroup = undefined;
   }
 }
