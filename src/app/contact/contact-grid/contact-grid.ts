@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import {
   KENDO_GRID,
-  CellCloseEvent,
-  CreateFormGroupArgs,
   EditEvent,
   RemoveEvent,
   SaveEvent,
@@ -12,11 +10,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Contact } from '../../models/contact.model';
 import { getContacts } from '../../mocks/contact.mock';
+import { KENDO_DIALOGS } from '@progress/kendo-angular-dialog';
+import { ContactComponent } from '../contact/contact';  // ← import du formulaire
 
 @Component({
   selector: 'app-contact-grid',
   standalone: true,
-  imports: [KENDO_GRID, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [KENDO_GRID, CommonModule, FormsModule, ReactiveFormsModule, KENDO_DIALOGS, ContactComponent],  // ← ajout
   templateUrl: './contact-grid.html',
   styleUrl: './contact-grid.scss',
 })
@@ -24,6 +24,11 @@ export class ContactGrid {
   contacts: Contact[] = getContacts();
   editedRowIndex: number | undefined;
   editedFormGroup: FormGroup | undefined;
+
+  // ↓ Nouvelles propriétés pour la popup
+  isDialogOpen = false;
+  selectedContact: Contact | null = null;
+  isNewContact = false;
 
   createFormGroup(dataItem: Contact): FormGroup {
     return new FormGroup({
@@ -36,16 +41,22 @@ export class ContactGrid {
     });
   }
 
-  addContact(): void {
-    const nouveau: Contact = {
-      nom: '',
-      prenom: '',
-      email: '',
-      telephone: 0,
-      societe: '',
-      commentaire: '',
-    };
-    this.contacts = [nouveau, ...this.contacts];
+  // ↓ Remplace addContact() — ouvre la popup en mode création
+  openAddDialog(): void {
+    this.selectedContact = null;
+    this.isNewContact = true;
+    this.isDialogOpen = true;
+  }
+
+  // ↓ Appelé quand le formulaire émet (save)
+  onContactSaved(contact: Contact): void {
+    this.contacts = [contact, ...this.contacts];
+    this.isDialogOpen = false;
+  }
+
+  // ↓ Appelé quand le formulaire émet (cancel)
+  onDialogCancel(): void {
+    this.isDialogOpen = false;
   }
 
   editHandler(event: EditEvent): void {

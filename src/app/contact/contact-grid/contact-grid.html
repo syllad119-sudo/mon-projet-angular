@@ -1,8 +1,24 @@
 <div class="grid-toolbar">
-  <button kendoButton (click)="addContact()" themeColor="primary" icon="plus">
+ <button kendoButton (click)="openAddDialog()" themeColor="primary" icon="plus">
+
     Ajouter un contact
   </button>
 </div>
+<kendo-dialog
+  *ngIf="isDialogOpen"
+  title="Nouveau contact"
+  [minWidth]="400"
+  [width]="550"
+  (close)="onDialogCancel()"
+>
+  <app-contact
+    [contact]="selectedContact"
+    [isNew]="isNewContact"
+    (save)="onContactSaved($event)"
+    (cancel)="onDialogCancel()"
+  />
+</kendo-dialog>
+
 
 <kendo-grid
   [data]="contacts"

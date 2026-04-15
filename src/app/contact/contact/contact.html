@@ -1,5 +1,5 @@
 <div class="contact-container">
-  <h2>Contactez-nous</h2>
+  <h2>{{ isNew ? 'Ajouter un contact' : 'Modifier le contact' }}</h2>
 
   <form [formGroup]="contactForm" (ngSubmit)="handleSubmit()">
 
@@ -51,7 +51,10 @@
       }
     </div>
 
-    <button type="submit">Envoyer</button>
+    <div class="form-actions">
+      <button type="button" (click)="onCancel()">Annuler</button>
+      <button type="submit">{{ isNew ? 'Ajouter' : 'Sauvegarder' }}</button>
+    </div>
 
   </form>
 </div>
